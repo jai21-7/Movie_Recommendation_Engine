@@ -11,6 +11,8 @@ A **step-by-step, learn-by-building** movie recommendation system using the real
 | 3 | Cosine similarity | Measure "alike-ness" independent of scale |
 | 4 | Nearest neighbors | Retrieve top-K most similar items/users |
 | 5 | Recommendation engines | Item-CF, User-CF, and Content-Based |
+| 6 | Evaluation metrics | RMSE and Precision@K |
+| 7 | Matrix factorization | SVD latent factor model |
 
 ## Quick Start
 
@@ -24,9 +26,12 @@ python steps/step02_build_features.py
 python steps/step03_cosine_similarity.py
 python steps/step04_nearest_neighbors.py
 python steps/step05_recommendations.py
+python steps/step06_evaluate.py
+python steps/step07_matrix_factorization.py
 
-# Interactive demo
+# Interactive demos
 python main.py
+streamlit run app.py
 ```
 
 ## Project Structure
@@ -42,16 +47,21 @@ python main.py
 │   ├── features.py          # User-item matrix, genre one-hot, TF-IDF
 │   ├── similarity.py        # Cosine similarity (manual + sklearn)
 │   ├── neighbors.py         # KNN retrieval
-│   └── recommender.py       # Item-CF, User-CF, Content-Based
+│   ├── recommender.py       # Item-CF, User-CF, Content-Based
+│   ├── evaluation.py        # RMSE, Precision@K
+│   └── matrix_factorization.py  # SVD recommender
 ├── steps/                   # Runnable learning scripts (start here!)
 │   ├── step01_download_and_explore.py
 │   ├── step02_build_features.py
 │   ├── step03_cosine_similarity.py
 │   ├── step04_nearest_neighbors.py
-│   └── step05_recommendations.py
+│   ├── step05_recommendations.py
+│   ├── step06_evaluate.py
+│   └── step07_matrix_factorization.py
 ├── notebooks/
 │   └── walkthrough.ipynb    # Jupyter notebook version
-└── main.py                  # Interactive CLI demo
+├── main.py                  # Interactive CLI demo
+└── app.py                   # Streamlit web UI
 ```
 
 ## The Three Recommender Types
@@ -86,10 +96,17 @@ See `src/similarity.py` for a manual implementation alongside sklearn.
 
 **MovieLens Latest Small** (~100K ratings, 600 users, 9K movies). Downloaded automatically on first run from GroupLens.
 
-## Next Steps (After This Project)
+## Evaluation & Advanced Models
 
-- Matrix factorization (SVD, ALS) for latent factors
-- Neural collaborative filtering
-- Hybrid models combining CF + content
-- Approximate nearest neighbors (FAISS) for scale
-- Evaluation metrics: RMSE, Precision@K, NDCG
+### Step 6 — Evaluation
+- **RMSE**: how accurate are rating predictions?
+- **Precision@K**: how many top-K recommendations are actually relevant?
+
+### Step 7 — SVD Matrix Factorization
+Decomposes the rating matrix into latent taste factors: `R ≈ U @ Σ @ V^T`
+
+### Web UI
+```bash
+streamlit run app.py
+```
+Pick a user, choose an algorithm (SVD, Item-CF, User-CF, Content-Based), and browse recommendations in the browser.
