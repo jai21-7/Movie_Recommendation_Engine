@@ -32,6 +32,7 @@ python steps/step07_matrix_factorization.py
 # Interactive demos
 python main.py
 streamlit run app.py
+uvicorn api:app --reload   # FastAPI at http://localhost:8000/docs
 ```
 
 ## Project Structure
@@ -110,3 +111,23 @@ Decomposes the rating matrix into latent taste factors: `R ≈ U @ Σ @ V^T`
 streamlit run app.py
 ```
 Pick a user, choose an algorithm (SVD, Item-CF, User-CF, Content-Based), and browse recommendations in the browser.
+
+### FastAPI REST API
+```bash
+uvicorn api:app --reload
+```
+Open **http://localhost:8000/docs** for interactive Swagger UI.
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /health` | API status and model info |
+| `GET /users` | List available user IDs |
+| `GET /movies?q=toy` | Search movies by title |
+| `GET /recommend/{user_id}?algorithm=svd&top_k=10` | Get recommendations |
+| `GET /similar/{movie_id}` | Similar movies (content-based) |
+| `GET /predict?user_id=1&movie_id=1` | SVD rating prediction |
+
+Example:
+```bash
+curl "http://localhost:8000/recommend/414?algorithm=svd&top_k=5"
+```
